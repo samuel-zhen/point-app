@@ -1,0 +1,11 @@
+<div class="ui grid">
+    <div class="four wide column">
+        <div class="ui small {{ auth.user.access_level_id == 1 ? 'three' : 'two' }} item menu">
+            <a href="{{ path_for('storeReceipts.settledList') }}" class="{% if menu == 'settled' %}active{% endif %} item">Lunas</a>
+            <a href="{{ path_for('storeReceipts.debtList') }}" class="{% if menu == 'debt' %}active{% endif %} item">Hutang</a>
+             {% if auth.user.access_level_id == 1 %}
+                <a href="{{ path_for('storeReceipts.canceledList') }}" class="{% if menu == 'canceled' %}active{% endif %} item">Batal</a>
+            {% endif %}
+        </div>
+    </div>
+</div>

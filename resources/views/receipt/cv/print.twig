@@ -1,0 +1,107 @@
+{% extends 'template/master.twig' %}
+
+{% block pageTitle %}Print Nota CV ({{ receipt.id }}){% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" href="{{ base_url()}}/css/print.css">
+{% endblock %}
+
+{% block content %}
+    {% include 'template/partials/header.twig' %}
+    
+    {% include 'receipt/partials/menu.twig' %}
+
+    <h2 class="ui header">Print Nota CV</h2>
+
+    <div class="cvReceipt">
+        <table class="cvReceipt__header">
+            <tr>
+                <td width="260px">&nbsp;</td>
+                <td>
+                    <div class="cvReceipt__number">
+                        <span class="title">Nota</span>
+                    </div>
+                </td>
+                <td width="260px" class="cvReceipt__to">
+                    <p>Tanjungpinang, {{ receipt.created_at|date }}</p>
+                    <span>Kepada: <strong>{{ receipt.customer }}</strong></span>
+                </td>
+            </tr>
+        </table>
+        <table class="cvReceipt__body ui small very celled compact table">
+            <thead>
+                <tr>
+                    <th class="three wide column">Banyaknya</th>
+                    <th>Nama Barang</th>
+                    <th class="three wide column">Harga Satuan</th>
+                    <th class="two wide column">Jumlah</t>
+                </tr>
+            </thead>
+            <tbody>
+                {% set total = 0 %}
+                {% if workOrders is not empty %}
+                    {% for workOrder in workOrders %}
+                        <tr>
+                            <td>{{ workOrder.quantity|number_format }} {{ workOrder.unit }}</td>
+                            <td>{{ workOrder.product }}</td>
+                            <td>{{ workOrder.price|number_format }}</td>
+                            <td>{{ workOrder.total|number_format }}</td>
+                        </tr>
+                        {% set total = total + workOrder.total %}
+                    {% endfor %}
+                {% endif %}
+                {% if items is not empty %}
+                    {% for item in items %}
+                        <tr>
+                            <td>{{ item.quantity|number_format }} {{ item.unit }}</td>
+                            <td>{{ item.product }}</td>
+                            <td>{{ item.price|number_format }}</td>
+                            <td>{{ item.total|number_format }}</td>
+                        </tr>
+                        {% set total = total + item.total %}
+                    {% endfor %}
+                {% endif %}
+                {% set remaining = 6 - (workOrders|length + items|length) %}
+                {% if remaining > 0 %}
+                    {% for i in 1..remaining %}
+                        <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="2">&nbsp;</th>  
+                    <th><strong>Total (Rp)</strong></th>
+                    <th><strong>{{ total|number_format }}</strong></th>
+                </tr>
+            </tfoot>
+        </table>
+        <div class="cvReceipt__sign-box">
+            <div class="receive-sign">
+                <span>Tanda Terima,</span>
+            </div>
+            <div class="regard-sign">
+                <span>Hormat Kami,</span>
+            </div>
+        </div>
+    </div>
+
+    <p></p>
+    <div>
+        <a class="ui primary button" id="js--print"><i class="print icon"></i> Print</a>
+        <a href="javascript:window.open('','_self').close();" class="ui button">Close</a>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{{ base_url()}}/js/jquery.print.min.js"></script>
+
+    <script>
+        $('.cvReceipt').print()
+
+        $('#js--print').click(function(event) {
+            event.preventDefault()
+            $('.cvReceipt').print()
+        })
+    </script>
+{% endblock %}

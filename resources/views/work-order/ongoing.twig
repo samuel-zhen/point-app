@@ -1,0 +1,29 @@
+{% extends 'template/master.twig' %}
+
+{% block pageTitle %}Ongoing SPK{% endblock %}
+
+{% block content %}
+    {% include 'template/partials/header.twig' %}
+
+    {% include 'work-order/partials/menu.twig' with {'menu': 'ongoing'} %}
+    
+    <h2 class="ui header">
+        Ongoing SPK
+        <div class="sub header">Daftar SPK yang sedang diproses.</div>
+    </h2>
+
+    {% include 'work-order/partials/search-form.twig' %}
+
+    {% include 'template/partials/flash.twig' %}
+
+    {% if workOrders is not empty %}
+        {% include 'work-order/partials/table.twig' with {'workOrders': workOrders} %}
+        {{ workOrders.links|raw }}
+    {% else %}
+        {% include 'template/partials/notFoundMessage.twig' with {'variable': 'SPK ongoing'} %}
+    {% endif %}
+{% endblock %}
+
+{% block script %}
+    <script src="{{ base_url()}}/js/autocomplete.js"></script>
+{% endblock %}

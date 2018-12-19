@@ -1,0 +1,10 @@
+<h1 class="ui center aligned header">Surat Perintah Kerja</h1>
+<div class="ui grid">
+    <div class="six wide column">
+        <div class="ui three item menu">
+            <a href="{{ path_for('workOrders.create') }}" class="{% if menu == 'create' %}active{% endif %} item">Buat SPK</a>
+            <a href="{{ path_for('workOrders.ongoing') }}" class="{% if menu == 'ongoing' %}active{% endif %} item">Ongoing SPK</a>
+            <a href="{{ path_for('workOrders.completed') }}" class="{% if menu == 'completed' %}active{% endif %} item">Completed SPK</a>
+        </div>
+    </div>
+</div>

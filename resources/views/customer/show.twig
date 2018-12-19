@@ -1,0 +1,48 @@
+{% extends 'template/master.twig' %}
+
+{% block pageTitle %}Data Pelanggan ({{ customer.id }}){% endblock %}
+
+{% block content %}
+    {% include 'template/partials/header.twig' %}
+    
+    {% include 'customer/partials/menu.twig' %}
+
+    <h2 class="ui header">Data Pelanggan</h2>
+
+    {% include 'template/partials/flash.twig' %}
+
+    <div class="ui padded piled segment">
+        <div class="ui grid">
+            <div class="row">
+                <div class="four wide column">
+                    <span>Nama Pelanggan</span>
+                    <p class="value">{{ customer.name }}</p>
+                </div>
+                <div class="four wide column">
+                    <span>Nomor Telp</span>
+                    <p class="value">{{ customer.phone_number ?? '---' }}</p>
+                </div>
+                <div class="four wide column">
+                    <span>Instansi</span>
+                    <p class="value">{{ customer.company ?? '---' }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="twelve wide column">
+                    <span>Alamat</span>
+                    <p class="value">{{ customer.address ?? '---' }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="{{ path_for('customers.edit', {'id': customer.id}) }}" class="ui orange button"><i class="edit icon"></i> Edit</a>
+    <form action="{{ path_for('customers.delete', {'id': customer.id}) }}" method="post" class="form-inline">
+        <input type="hidden" name="_METHOD" value="delete">
+
+        {{ csrf.fields | raw }}
+
+        <button type="submit" class="negative ui button"><i class="trash icon"></i> Delete</button>
+    </form>
+    <a href="{{ path_for('customers.index') }}" class="ui button">Cancel</a>
+{% endblock %}

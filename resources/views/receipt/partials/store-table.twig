@@ -1,0 +1,22 @@
+<table class="ui celled table">
+    <thead>
+        <tr>
+            <th>No. Nota</th>
+            <th>Nama Pelanggan</th>
+            <th>Tanggal Buka</th>
+            <th>Dibuka Oleh</th>
+            <th>Total (Rp)</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for receipt in receipts %}
+            <tr>
+                <td><a href="{{ path_for('storeReceipts.show', {'id': receipt.id}) }}">{{ receipt.formattedNumber() }}</a></td>
+                <td>{{ receipt.customer }}</td>
+                <td>{{ receipt.created_at|date }}</td>
+                <td>{{ receipt.user.username }}</td>
+                <td>{{ receipt.total|number_format }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

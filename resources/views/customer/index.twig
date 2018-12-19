@@ -1,0 +1,61 @@
+{% extends 'template/master.twig' %}
+
+{% block pageTitle %}Pelanggan{% endblock %}
+
+{% block content %}
+    {% include 'template/partials/header.twig' %}
+    
+    {% include 'customer/partials/menu.twig' with {'menu': 'index'} %}
+
+    <h2 class="ui header">
+        Daftar Pelanggan
+        <div class="sub header">Nama-nama pelanggan yang terdaftar.</div>
+    </h2>
+
+    <form method="get" class="ui form">
+        <div class="fields">
+            <div class="four wide field">
+                <div class="ui search">
+                    <input type="text" name="q" class="prompt" placeholder="Nama Pelanggan" value="{{ GET['q_customer'] ?? null }}" required>
+                    <div class="results"></div>
+                </div>
+            </div>
+            <div class="field">
+                <button type="submt" class="ui button"><i class="search icon"></i>Search</button>
+            </div>
+        </div>
+    </form>
+
+    {% include 'template/partials/flash.twig' %}
+
+    {% if customers is not empty %}
+        <table class="ui celled table">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Nama Pelanggan</th>
+                    <th>Nomor Telp</th>
+                    <th>Alamat</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in customers %}
+                    <tr>
+                        <td><a href="{{ path_for('customers.show', {'id': customer.id}) }}">{{ loop.index }}</a></td>
+                        <td>{{ customer.name }}</td>
+                        <td>{{ customer.phone_number }}</td>
+                        <td>{{ customer.address }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {{ customers.links|raw }}
+    {% else %}
+        {% include 'template/partials/notFoundMessage.twig' with {'variable': 'pelanggan'} %}
+    {% endif %}
+{% endblock %}
+
+{% block script %}
+    <script src="{{ base_url()}}/js/autocomplete.js"></script>
+{% endblock %}

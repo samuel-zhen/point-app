@@ -1,0 +1,52 @@
+{% extends 'template/master.twig' %}
+
+{% block pageTitle %}Tambah Harga Beli{% endblock %}
+
+{% block content %}
+    {% include 'template/partials/header.twig' %}
+    
+    {% include 'price-list/partials/menu.twig' with {'menu': 'purchasePrices.create'} %}
+
+    <h2 class="ui header">
+        Tambah Harga Beli
+        <div class="sub header">Tambah harga pembelian barang.</div>
+    </h2>
+
+    <form action="{{ path_for('purchasePrices.store') }}" method="post" class="ui form">
+        <div class="three fields">
+            <div class="five wide {% if errors.product_name %}error{% endif %} required field">
+                <label for="product_name">Nama Barang</label>
+                <input type="text" name="product_name" id="product_name" placeholder="Nama Barang" value="{{ old.product_name }}">
+            </div>
+            <div class="four wide required field">
+                <label for="category">Kategori</label>
+                <select name="category_id" id="category" class="ui search dropdown">
+                    {% for category in productCategories %}
+                        <option value="{{ category.id }}" {% if category.id == 1 %}selected{% endif %} >{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="three wide {% if errors.price %}error{% endif %} required field">
+                <label for="price">Harga Satuan</label>
+                <input type="text" name="price" id="price" placeholder="Harga Satuan" value="{{ old.price }}">
+            </div>
+        </div>
+
+        {{ csrf.fields|raw }}
+
+        {% include 'template/partials/errors.twig' %}
+        
+        <div class="field">
+            <button type="submit" class="ui primary button"><i class="save icon"></i> Save</button>
+            <a href="{{ path_for('purchasePrices.index') }}" class="ui button">Cancel</a>
+        </div>
+    </form>
+{% endblock %}
+
+{% block script %}
+    <script src="{{ base_url() }}/js/index.js"></script>
+    <script src="{{ base_url()}}/js/jquery.number.min.js"></script>
+    <script>
+        $('#price').number(true, 0, ',', '.')
+    </script>
+{% endblock %}

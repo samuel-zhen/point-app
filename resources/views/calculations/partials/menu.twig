@@ -1,0 +1,10 @@
+<h1 class="ui header">Omset dan Hutang</h1>
+<div class="ui grid">
+    <div class="nine wide column">
+        <div class="ui three item menu">
+            <a href="{{ path_for('profit.index') }}" class="{% if menu == 'profit' %}active{% endif %} item">Omset</a>
+            <a href="{{ path_for('debt.fromStore') }}" class="{% if menu == 'debt.fromStore' %}active{% endif %} item">Hutang Dari Nota Toko</a>
+            <a href="{{ path_for('debt.fromCV') }}" class="{% if menu == 'debt.fromCV' %}active{% endif %} item">Hutang Dari Nota CV</a>
+        </div>
+    </div>
+</div>

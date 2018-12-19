@@ -1,0 +1,11 @@
+{% if flash.getMessage('success') %}
+    <div class="ui success message">
+        <p><i class="hand peace icon"></i> {{ flash.getMessage('success') | first }}</p>
+    </div>
+{% endif %}
+
+{% if flash.getMessage('error') %}
+    <div class="ui error message">
+        <p><i class="exclamation icon"></i> {{ flash.getMessage('error') | first }}</p>
+    </div>
+{% endif %}

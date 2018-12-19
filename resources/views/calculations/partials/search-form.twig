@@ -1,0 +1,13 @@
+<form method="get" class="ui form">
+    <div class="fields">
+        <div class="five wide field">
+            <div class="ui search">
+                <input type="text" name="customer" class="prompt" placeholder="Nama Pelanggan" value="{{ GET.customer ?? null }}" required>
+                <div class="results"></div>
+            </div>
+        </div>
+        <div class="field">
+            <button type="submit" class="ui primary button">Calculate</button>
+        </div>
+    </div>
+</form>

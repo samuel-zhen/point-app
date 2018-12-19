@@ -1,0 +1,11 @@
+<h1 class="ui center aligned header">Nota</h1>
+<div class="ui grid">
+    <div class="eight wide column">
+    <div class="ui small four item menu">
+            <a href="{{ path_for('storeReceipts.create') }}" class="{% if menu == 'storeReceipts.create' %}active{% endif %} item">Buka Nota Toko</a>
+            <a href="{{ path_for('storeReceipts.debtList') }}" class="{% if menu == 'storeReceipts.list' %}active{% endif %} item">Nota Toko</a>
+            <a href="{{ path_for('cvReceipts.create') }}" class="{% if menu == 'cvReceipts.create' %}active{% endif %} item">Buka Nota CV</a>
+            <a href="{{ path_for('cvReceipts.debtList') }}" class="{% if menu == 'cvReceipts.list' %}active{% endif %} item">Nota CV</a>
+        </div>
+    </div>
+</div>

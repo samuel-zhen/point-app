@@ -1,0 +1,17 @@
+{% extends 'template/master.twig' %}
+
+{% block pageTitle %}Page Not Found{% endblock %}
+
+{% block content %}
+    <h1 class="ui header">
+        <i class="question circle icon"></i>
+        <div class="content">
+            404 - Not Found
+        </div>
+    </h1>
+    <p>Oops! The page you looking for is not available...</p>
+    <p>Don't worry. Klik here to go <a href="{{ path_for('home') }}">home</a>.</p>
+
+    <div class="ui divider"></div>
+    <p><strong>Point App &copy; 2018</strong></p>
+{% endblock %}

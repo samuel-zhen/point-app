@@ -1,0 +1,52 @@
+{% extends 'template/master.twig' %}
+
+{% block pageTitle %}Daftar Kategori Barang{% endblock %}
+
+{% block content %}
+    {% include 'template/partials/header.twig' %}
+
+    {% include 'price-list/partials/menu.twig' with {'menu': 'categories.index'} %}
+
+    <h2 class="ui header">
+        Kategori Barang
+        <div class="sub header">Daftar kategori barang.</div>
+    </h2>
+
+    <form method="get" class="ui form">
+        <div class="fields">
+            <div class="four wide field">
+                <input type="text" name="q" placeholder="Kategori" value="{{ GET['q'] ?? null }}" required>
+            </div>
+            <div class="field">
+                <button type="submit" class="ui button"><i class="search icon"></i>Search</button>
+            </div>
+        </div>
+    </form>
+
+    {% include 'template/partials/flash.twig' %}
+
+    {% if productCategories is not empty %}
+        <table class="ui celled table">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Nama Kategori</th>
+                    <th>Total Barang</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for category in productCategories %}
+                    <tr>
+                        <td><a href="{{ path_for('categories.edit', {'id': category.id}) }}">{{ loop.index }}</a></td>
+                        <td>{{ category.name }}</td>
+                        <td>{{ category.purchasePrices.count() }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {{ productCategories.links|raw }}
+    {% else %}
+        {% include 'template/partials/notFoundMessage.twig' with {'variable': 'kategori barang'} %}
+    {% endif %}
+{% endblock %}

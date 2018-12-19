@@ -1,0 +1,40 @@
+{% extends 'template/master.twig' %}
+
+{% block pageTitle %}Edit Kategori Barang ({{ category.id }}){% endblock %}
+
+{% block content %}
+    {% include 'template/partials/header.twig' %}
+
+    {% include 'price-list/partials/menu.twig' %}
+
+    <h2 class="ui header">
+        Edit Kategori Barang
+        <div class="sub header">Edit kategori pembelian barang.</div>
+    </h2>
+
+    <form action="{{ path_for('categories.update', {'id': category.id }) }}" method="post" class="ui form">
+        <input type="hidden" name="_METHOD" value="put">
+        <div class="five wide {% if errors.category_name %}error{% endif %} field">
+            <label for="category_name">Nama Kategori</label>
+            <input type="text" name="category_name" id="category_name" placeholder="Nama Kategori" value="{{ category.name }}">
+        </div>
+
+        {{ csrf.fields|raw }}
+
+        {% include 'template/partials/errors.twig' %}
+
+        <div class="field">
+            <button type="submit" class="ui primary button"><i class="save icon"></i> Update</button>
+            <a href="{{ path_for('categories.index') }}" class="ui button">Cancel</a>
+        </div>
+    </form>
+    <p></p>
+
+    {% if category.id != 1 %}
+        <form action="{{ path_for('categories.delete', {'id': category.id}) }}" method="post" class="form-inline">
+            <input type="hidden" name="_METHOD" value="delete">
+            {{ csrf.fields|raw }}
+            <button type="submit" class="negative ui button"><i class="trash icon"></i> Delete</button>
+        </form>
+    {% endif %}
+{% endblock %}

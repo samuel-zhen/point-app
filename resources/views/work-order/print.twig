@@ -1,0 +1,108 @@
+{% extends 'template/master.twig' %}
+
+{% block pageTitle %}Print SPK ({{ workOrder.id }}){% endblock %}
+
+{% block content %}
+    {% include 'template/partials/header.twig' %}
+
+    {% include 'work-order/partials/menu.twig' %}
+    
+    <h2 class="ui header">Print SPK</h2>
+
+    <div class="workOrder">
+        <table class="workOrder__layout">
+            <thead>
+                <tr>
+                    <td width="180px"><img src="{{ base_url()}}/images/point_bw.png" class="workOrder__logo"></td>
+                    <td colspan="3" class="workOrder__heading">Surat Perintah Kerja</td>
+                </tr>
+            </thead>
+            <tbody class="workOrder__body">
+                <tr>
+                    <td class="workOrder__attr">Nama</td>
+                    <td width="10px">:</td>
+                    <td colspan="2" class="workOrder__value">{{ workOrder.customer }}</td>
+                </tr>
+                <tr>
+                    <td class="workOrder__attr">Jenis Cetakan</td>
+                    <td>:</td>
+                    <td colspan="2" class="workOrder__value">{{ workOrder.print_type }}</td>
+                </tr>
+                <tr>
+                    <td class="workOrder__attr">Banyaknya</td>
+                    <td>:</td>
+                    <td colspan="2" class="workOrder__value">{{ workOrder.quantity }} {{ workOrder.unit }}</td>
+                </tr>
+                <tr>
+                    <td colspan="4" class="workOrder__attr">Bahan</td>
+                </tr>
+                <tr>
+                    <td class="workOrder__attr">&nbsp; &nbsp; &bullet; Jenis/Warna</td>
+                    <td>:</td>
+                    <td colspan="2" class="workOrder__value">{{ workOrder.type_color }}</td>
+                </tr>
+                <tr>
+                    <td class="workOrder__attr">&nbsp; &nbsp; &bullet; Ukuran</td>
+                    <td>:</td>
+                    <td colspan="2" class="workOrder__value">{{ workOrder.dimension }}</td>
+                </tr>
+                <tr>
+                    <td class="workOrder__attr">&nbsp; &nbsp; &bullet; Tinta</td>
+                    <td>:</td>
+                    <td colspan="2" class="workOrder__value">{{ workOrder.ink }}</td>
+                </tr>
+                <tr>
+                    <td colspan="4" class="workOrder__attr">Buku</td>
+                </tr>
+                <tr>
+                    <td class="workOrder__attr">&nbsp; &nbsp; &bullet; Set/Rangkap</td>
+                    <td>:</td>
+                    <td class="workOrder__value">{{ workOrder.set_double }}</td>
+                    <td width="280px">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td class="workOrder__attr">&nbsp; &nbsp; &bullet; Nomor</td>
+                    <td>:</td>
+                    <td class="workOrder__value">{{ workOrder.number }}</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td class="workOrder__attr">&nbsp; &nbsp; &bullet; Cacah</td>
+                    <td>:</td>
+                    <td class="workOrder__value">{{ workOrder.holes }}</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td class="workOrder__attr">&nbsp; &nbsp; &bullet; Lem</td>
+                    <td>:</td>
+                    <td class="workOrder__value">{{ workOrder.glue }}</td>
+                    <td>&nbsp;</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="workOrder__sign-box">
+            <p>Tanjungpinang, {{ workOrder.created_at|date }} <br>
+            Diperintah oleh,</p>
+            <div class="workOrder__sign"></div>
+            <span>Nama jelas</span>
+        </div>
+    </div>
+    <p></p>
+    <div>
+        <a class="ui primary button" id="js--print"><i class="print icon"></i> Print</a>
+        <a href="javascript:window.open('','_self').close();" class="ui button">Close</a>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{{ base_url()}}/js/jquery.print.min.js"></script>
+
+    <script>
+        $('.workOrder').print()
+
+        $('#js--print').click(function(event) {
+            event.preventDefault()
+            $('.workOrder').print()
+        })
+    </script>
+{% endblock %}

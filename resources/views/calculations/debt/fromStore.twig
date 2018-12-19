@@ -1,0 +1,70 @@
+{% extends 'template/master.twig' %}
+
+{% block pageTitle %}Hutang dari Nota Toko{% endblock %}
+
+{% block content %}
+    {% include 'template/partials/header.twig' %}
+
+    {% include 'calculations/partials/menu.twig' with {'menu': 'debt.fromStore'} %}
+    
+    <h2 class="ui header">
+        Hutang Dari Nota Toko
+        <div class="sub header">Masukkan nama pelanggan dan klik tombol <strong>calculate</strong> untuk menghitung hutang.</div>
+    </h2>
+
+    {% include 'calculations/partials/search-form.twig' %}
+
+    {% if GET.customer is not null %}
+        {% if storeReceipts is not empty %}
+            <div class="ui divider"></div>
+            <p>Nota yang belum dilunasi atas nama <strong>{{ GET.customer }}</strong>.</p>
+            <p class="value">Total hutang: Rp {{ storeSum|number_format }}</p>
+
+            <table class="ui celled table">
+                <thead>
+                    <tr>
+                        <th>No. Nota</th>
+                        <th>Tanggal Nota</th>
+                        <th>Total</th>
+                        <th>Dibuka oleh</th>
+
+                        {% if auth.user.access_level_id == 1 or auth.user.access_level_id == 2 %}
+                            <th>Lunaskan</th>
+                        {% endif %}
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for receipt in storeReceipts %}
+                        <tr>
+                            <td><a href="{{ path_for('storeReceipts.show', {'id': receipt.id})}}">{{ receipt.formattedNumber() }}</a></td>
+                            <td>{{ receipt.created_at|date }}</td>
+                            <td>{{ receipt.total|number_format }}</td>
+                            <td>{{ receipt.user.username }}</td>
+
+                            {% if auth.user.access_level_id == 1 or auth.user.access_level_id == 2 %}
+                                <td>
+                                    <form action="{{ path_for('storeReceipts.settled', {'id': receipt.id})}}" method="post" class="form-inline">
+                                        <input type="hidden" name="_METHOD" value="patch">
+                                        {{ csrf.fields|raw }}
+                                        <button type="submit" class="positive ui small button"><i class="check icon"></i> Lunaskan</button>
+                                    </form>
+                                </td>
+                            {% endif %}
+
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {{ storeReceipts.links|raw }}
+        {% else %}
+            <div class="ui message">
+                <p>Tidak ada hutang atas nama <strong>{{ GET.customer }}</strong>.</p>
+            </div>
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block script %}
+    <script src="{{ base_url()}}/js/autocomplete.js"></script>
+{% endblock %}

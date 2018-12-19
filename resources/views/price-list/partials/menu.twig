@@ -1,0 +1,15 @@
+<h1 class="ui header">Daftar Harga</h1>
+<div class="ui grid">
+    <div class="{{ auth.user.access_level_id == 1 ? 'sixteen' : 'five' }} wide column">
+        <div class="ui small {{ auth.user.access_level_id == 1 ? 'six' : 'two' }} item menu">
+            <a href="{{ path_for('sellPrices.index') }}" class="{% if menu == 'sellPrices.index' %}active{% endif %} item">Harga Jual</a>
+            <a href="{{ path_for('sellPrices.create') }}" class="{% if menu == 'sellPrices.create' %}active{% endif %} item">Tambah Harga Jual</a>
+            {% if auth.user.access_level_id == 1 %}
+                <a href="{{ path_for('purchasePrices.index') }}" class="{% if menu == 'purchasePrices.index' %}active{% endif %} item">Harga Beli</a>
+                <a href="{{ path_for('purchasePrices.create') }}" class="{% if menu == 'purchasePrices.create' %}active{% endif %} item">Tambah Harga Beli</a>
+                <a href="{{ path_for('categories.index') }}" class="{% if menu == 'categories.index' %}active{% endif %} item">Kategori Barang</a>
+                <a href="{{ path_for('categories.create') }}" class="{% if menu == 'categories.create' %}active{% endif %} item">Tambah Kategori Barang</a>
+            {% endif %}
+        </div>
+    </div>
+</div>

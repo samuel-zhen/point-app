@@ -1,0 +1,12 @@
+@media print {
+  .ui.table {
+    border-collapse: collapse;
+    border-color: #999; }
+    .ui.table thead th {
+      text-align: center; }
+    .ui.table thead th, .ui.table tfoot th, .ui.table tr td {
+      border: 1px solid #999; }
+    .ui.table thead th, .ui.table tfoot th {
+      background: #ccc; } }
+
+/*# sourceMappingURL=print.css.map */

@@ -1,0 +1,9 @@
+<h1 class="ui center aligned header">Catatan</h1>
+<div class="ui grid">
+    <div class="four wide column">
+        <div class="ui two item menu">
+            <a href="{{ path_for('notes.index') }}" class="{% if menu == 'index' %}active{% endif %} item">Semua Catatan</a>
+            <a href="{{ path_for('notes.create') }}" class="{% if menu == 'create' %}active{% endif %} item">Tambah Catatan</a>
+        </div>
+    </div>
+</div>

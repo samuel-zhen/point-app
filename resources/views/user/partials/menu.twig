@@ -1,0 +1,9 @@
+<h1 class="ui header">Akun</h1>
+<div class="ui grid">
+    <div class="four wide column">
+        <div class="ui two item menu">
+            <a href="{{ path_for('users.index') }}" class="{% if menu == 'index' %}active{% endif %} item">Daftar Akun</a>
+            <a href="{{ path_for('users.create') }}" class="{% if menu == 'create' %}active{% endif %} item">Buat Akun</a>
+        </div>
+    </div>
+</div>

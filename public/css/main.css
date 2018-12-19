@@ -1,0 +1,165 @@
+body {
+  background: url("../images/symphony.png"); }
+
+.container {
+  padding: 30px 0; }
+
+a:hover {
+  text-decoration: underline; }
+
+.login {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 5px;
+  padding: 20px;
+  width: 400px; }
+
+.value {
+  font-weight: 700;
+  font-size: larger; }
+
+.form-inline {
+  display: inline-block; }
+
+.notes-description {
+  height: 200px;
+  max-height: 200px;
+  overflow-y: auto; }
+
+.work-order-wrapper {
+  max-height: 200px;
+  overflow-y: auto; }
+
+.home-wrapper {
+  margin: 0 auto;
+  width: 80%; }
+
+.main-menu {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 150px;
+  grid-gap: 15px;
+  width: 100%; }
+  .main-menu__item {
+    border: 1px solid #0984e3;
+    border-radius: 5px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: #0984e3;
+    transition: transform .3s ease, box-shadow .3s ease, background .3s ease; }
+    .main-menu__item__text {
+      margin-top: 10px;
+      font-size: 16px;
+      font-weight: 700; }
+    .main-menu__item:hover {
+      background: #0984e3;
+      color: white;
+      transform: translateY(-5px);
+      box-shadow: 0px 5px 5px #ccc;
+      text-decoration: none; }
+
+.workOrder {
+  background: #fff;
+  border: 1px solid #ccc;
+  height: 148mm;
+  padding: 10px 20px;
+  position: relative;
+  width: 210mm; }
+  .workOrder__layout {
+    border-collapse: collapse;
+    width: 100%; }
+  .workOrder__logo {
+    width: 100px;
+    height: auto; }
+  .workOrder__heading {
+    font-style: italic;
+    font-weight: 700;
+    font-size: 20px;
+    text-align: center;
+    text-decoration: underline; }
+  .workOrder__body {
+    font-size: 16px; }
+    .workOrder__body td {
+      padding: 8px 0 2px 0; }
+  .workOrder__attr {
+    font-weight: 700; }
+  .workOrder__value {
+    border-bottom: 1px dashed #222; }
+  .workOrder__sign-box {
+    align-items: center;
+    bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    right: 50px;
+    text-align: center; }
+  .workOrder__sign {
+    border-bottom: 1px solid #222;
+    height: 40px;
+    width: 150px; }
+
+.storeReceipt,
+.cvReceipt {
+  background: #fff;
+  border: 1px solid #ccc;
+  height: 148mm;
+  padding: 20px;
+  position: relative;
+  width: 210mm; }
+  .storeReceipt__header,
+  .cvReceipt__header {
+    width: 100%;
+    border-collapse: collapse; }
+  .storeReceipt__logo,
+  .cvReceipt__logo {
+    height: 60px; }
+  .storeReceipt__address,
+  .cvReceipt__address {
+    font-size: 10px; }
+  .storeReceipt__number,
+  .cvReceipt__number {
+    text-align: center; }
+    .storeReceipt__number .title,
+    .cvReceipt__number .title {
+      display: block;
+      font-weight: 700;
+      font-size: 24px;
+      letter-spacing: 3px;
+      text-decoration: underline;
+      text-transform: uppercase; }
+    .storeReceipt__number .number,
+    .cvReceipt__number .number {
+      display: block;
+      font-size: 18px;
+      font-weight: 700;
+      margin-top: 10px; }
+  .storeReceipt__to,
+  .cvReceipt__to {
+    vertical-align: top;
+    padding-left: 20px; }
+  .storeReceipt__sign-box,
+  .cvReceipt__sign-box {
+    bottom: 20px;
+    display: flex;
+    height: 80px;
+    justify-content: space-between;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%);
+    width: 600px; }
+    .storeReceipt__sign-box .receive-sign, .storeReceipt__sign-box .regard-sign,
+    .cvReceipt__sign-box .receive-sign,
+    .cvReceipt__sign-box .regard-sign {
+      text-align: center;
+      width: 180px;
+      border-bottom: 1px solid #222; }
+
+.cvReceipt__number {
+  padding-top: 60px; }
+
+/*# sourceMappingURL=main.css.map */

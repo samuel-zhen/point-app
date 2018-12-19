@@ -1,0 +1,33 @@
+{% extends 'template/master.twig' %}
+
+{% block pageTitle %}Edit Catatan ({{ note.id }}){% endblock %}
+
+{% block content %}
+    {% include 'template/partials/header.twig' %}
+
+    {% include 'note/partials/menu.twig' %}
+
+    <h2 class="ui header">Edit Catatan</h2>
+
+    <form action="{{ path_for('notes.update', {'id': note.id}) }}" method="post" class="ui form">
+        <input type="hidden" name="_METHOD" value="put">
+        <div class="six wide field">
+            <label for="catatan">Catatan</label>
+            <textarea name="catatan" id="catatan">{{ note.body|raw }}</textarea>
+        </div>
+
+        {{ csrf.fields|raw }}
+
+        {% include 'template/partials/errors.twig' %}
+
+        <div class="field">
+            <button class="ui primary button"><i class="save icon"></i> Update</button>
+            <a href="{{ path_for('notes.index') }}" class="ui button">Cancel</a>
+        </div>
+    </form>
+{% endblock %}
+
+{% block script %}
+    <script src="{{ base_url()}}/js/tinymce/tinymce.min.js"></script>
+    <script src="{{ base_url()}}/js/tinymce.js"></script>
+{% endblock %}

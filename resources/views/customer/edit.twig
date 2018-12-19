@@ -1,0 +1,44 @@
+{% extends 'template/master.twig' %}
+
+{% block pageTitle %}Edit Pelanggan ({{ customer.id }}){% endblock %}
+
+{% block content %}
+    {% include 'template/partials/header.twig' %}
+
+    {% include 'customer/partials/menu.twig' %}
+
+    <h2 class="ui header">Edit Pelanggan</h2>
+
+    <form action="{{ path_for('customers.update', {'id': customer.id }) }}" method="post" class="ui form">
+        <input type="hidden" name="_METHOD" value="put">
+        <div class="two fields">
+            <div class="six wide field">
+                <label for="name">Nama Pelanggan</label>
+                <input type="text" name="name" id="name" placeholder="Nama Pelanggan" value="{{ customer.name }}">
+            </div>
+            <div class="six wide field">
+                <label for="phone_number">Nomor Telp</label>
+                <input type="text" name="phone_number" id="phone_number" placeholder="Nomor Telp" value="{{ customer.phone_number }}">
+            </div>
+        </div>
+        <div class="two fields">
+            <div class="six wide field">
+                <label for="company">Instansi</label>
+                <input type="text" name="company" id="company" placeholder="Instansi" value="{{ customer.company }}">
+            </div>
+            <div class="six wide field">
+                <label for="address">Alamat</label>
+                <textarea name="address" id="address" rows="2" placeholder="Alamat">{{ customer.address }}</textarea>
+            </div>
+        </div>
+
+        {{ csrf.fields|raw }}
+
+        {% include 'template/partials/errors.twig' %}
+
+        <div class="field">
+            <button type="submit" class="ui primary button"><i class="save icon"></i>Update</button>
+            <a href="{{ path_for('customers.show', {'id': customer.id}) }}" class="ui button">Cancel</a>
+        </div>
+    </form>
+{% endblock %}

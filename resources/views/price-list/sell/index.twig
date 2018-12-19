@@ -1,0 +1,59 @@
+{% extends 'template/master.twig' %}
+
+{% block pageTitle %}Daftar Harga{% endblock %}
+
+{% block content %}
+    {% include 'template/partials/header.twig' %}
+
+    {% include 'price-list/partials/menu.twig' with {'menu': 'sellPrices.index'} %}
+
+    <h2 class="ui header">
+        Daftar Harga Jual
+        <div class="sub header">Daftar harga dasar penjualan barang.</div>
+    </h2>
+
+    <form method="get" class="ui form">
+        <div class="fields">
+            <div class="four wide field">
+                <input type="text" name="q" placeholder="Nama barang" value="{{ GET['q'] ?? null }}" required>
+            </div>
+            <div class="field">
+                <button type="submit" class="ui button"><i class="search icon"></i>Search</button>
+            </div>
+        </div>
+    </form>
+
+    {% include 'template/partials/flash.twig' %}
+
+    {% if sellPrices is not empty %}
+        <table class="ui celled table">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Nama Barang</th>
+                    <th>Harga Satuan</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sellPrice in sellPrices %}
+                <tr>
+                    <td>
+                        {# If active user is owner or admin then enable edit link #}
+                        {% if auth.user.access_level_id == 1 or auth.user.access_level_id == 2 %}
+                            <a href="{{ path_for('sellPrices.edit', {'id': sellPrice.id}) }}">{{ loop.index }}</a>
+                        {% else %}
+                            {{ loop.index }}
+                        {% endif %}
+                    </td>
+                    <td>{{ sellPrice.product_name }}</td>
+                    <td>{{ sellPrice.price|number_format }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {{ sellPrices.links|raw }}
+    {% else %}
+        {% include 'template/partials/notFoundMessage.twig' with {'variable': 'harga jual'} %}
+    {% endif %}
+{% endblock %}

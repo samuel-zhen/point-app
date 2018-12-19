@@ -1,0 +1,180 @@
+{% extends 'template/master.twig' %}
+
+{% block pageTitle %}Buka Nota Toko{% endblock %}
+
+{% block content %}
+    {% include 'template/partials/header.twig' %}
+
+    {% include 'receipt/partials/menu.twig' with {'menu': 'storeReceipts.create'} %}
+
+    {# Show form to search for customer name if customerName is not set #}
+    {% if customerName is null %}
+        <h2 class="ui header">
+            Buka Nota Toko
+            <div class="sub header">Masukkan nama pelanggan dan tekon tombol <strong>create</strong> untuk memulai.</div>
+        </h2>
+
+        <form method="get" class="ui form">
+            <div class="fields">
+                <div class="four wide field">
+                    <div class="ui search">
+                        <input type="text" name="customer" id="customer" class="prompt" placeholder="Nama Pelanggan" required>
+                        <div class="results"></div>
+                    </div>
+                </div>
+                <div class="field">
+                    <button type="submit" class="ui primary button">Create</button>
+                </div>
+            </div>
+        </form>
+    {% endif %}
+
+    {# Show form to create receipt if customerName is set #}
+    {% if customerName is not null %}
+        <h2 class="ui header">Buka Nota Toko</h2>
+        <div class="ui grid">
+            <div class="three wide column">
+                <span>Tanggal Nota</span>
+                <p class="value">{{ 'now'|date }}</p>
+            </div>
+            <div class="five wide column">
+                <span>Nama Pelanggan</span>
+                <p class="value">{{ customerName }}</p>
+            </div>
+        </div>
+
+        <div class="ui segment">
+            <h3 class="ui header">
+                SPK
+                <div class="sub header">SPK atas nama {{ customerName }}.</div>
+            </h3>
+
+            {% if workOrders is not empty %}
+                <div class="ui segment work-order-wrapper">
+                    <table class="ui fixed single line compact table">
+                        <thead>
+                            <tr>
+                                <th>No. SPK</th>
+                                <th class="seven wide">Jenis Cetakan</th>
+                                <th>Banyaknya</th>
+                                <th>Satuan</th>
+                                <th>Tanggal</th>
+                                <th>Tambah</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for workOrder in workOrders %}
+                                <tr>
+                                    <td><a href="{{ path_for('workOrders.show', {'id': workOrder.id}) }}">{{ workOrder.id }}</a></td>
+                                    <td>{{ workOrder.print_type }}</td>
+                                    <td>{{ workOrder.quantity}}</td>
+                                    <td>{{ workOrder.unit }}</td>
+                                    <td>{{ workOrder.created_at|date }}</td>
+                                    <td>
+                                        <div class="inline field">
+                                            <input type="hidden" class="js--workOrder-id" value="{{ workOrder.id }}">
+                                            <input type="hidden" class="js--workOrder-product" value="{{ workOrder.print_type }}">
+                                            <input type="hidden" class="js--workOrder-quantity" value="{{ workOrder.quantity }}">
+                                            <input type="hidden" class="js--workOrder-unit" value="{{ workOrder.unit }}">
+                                            <div class="ui toggle checkbox">
+                                                <input type="checkbox" tabindex="0" class="js--toggle-work" value="{{ workOrder.id }}" id="check-{{ workOrder.id }}" class="hidden">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="ui message">
+                    <p>Tidak ada SPK yang tersedia!</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="ui segment">
+            <h3 class="ui header">
+                Manual
+                <div class="sub header">Tambah barang tanpa SPK.</div>
+            </h3>
+
+            {# Iframe to store inputs from manual form #}
+            <iframe name="💾" style="display:none" src="about:blank"></iframe>
+
+            <form class="ui form" target="💾" action="about:blank" id="js--manual-form">
+                <div class="fields">
+                    <div class="eight wide field">
+                        <label for="manual_product">Nama Barang</label>
+                        <input type="text" name="manual_product" id="manual_product" placeholder="Nama Barang" required>
+                    </div>
+                    <div class="two wide field">
+                        <label for="manual_quantity">Banyaknya</label>
+                        <input type="text" name="manual_quantity" id="manual_quantity" placeholder="0" required>
+                    </div>
+                    <div class="two wide field">
+                        <label for="manual_unit">Satuan</label>
+                        <input type="text" name="manual_unit" id="manual_unit" placeholder="Satuan" required>
+                    </div>
+                    <div class="two wide field">
+                        <label for="manual_price">Harga Satuan</label>
+                        <input type="text" name="manual_price" id="manual_price" placeholder="0" required>
+                    </div>
+                    <div class="two wide field">
+                        <label>&nbsp;</label>
+                        <button type="submit" class="ui primary button" id="js--manual-button">Add</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        {# Receipt Form #}
+        <div class="ui segment">
+            <div class="ui header">
+                Nota
+                <div class="sub header">Maksimal jumlah barang: 6.</div>
+            </div>
+            <div class="ui message" id="js--message">
+                <p>Tidak ada barang di nota...</p>
+            </div>
+
+            <form action="{{ path_for('storeReceipts.store')}}" method="post" class="ui form" id="js--receipt-form" >
+                <input type="hidden" name="customer" value="{{ GET.customer }}">
+                <input type="hidden" name="total" id="js--final-total">
+                <table class="ui compact table">
+                    <thead>
+                        <tr>
+                            <th class="eight wide">Nama Barang</th>
+                            <th class="two wide">Banyaknya</th>
+                            <th class="two wide">Satuan</th>
+                            <th class="two wide">Harga Satuan</th>
+                            <th class="two wide">Jumlah</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="js--receipt-body">
+                        {# Receipt's items goes here #}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="4">Total (Rp)</th>
+                            <th colspan="2" id="js--total-label" style="font-weight: 700;">0</th>
+                        </tr>
+                    </tfoot>
+                </table>
+                <div class="field">
+                    {{ csrf.fields|raw }}
+                    <button type="submit" class="ui primary button"><i class="icon save"></i>Save</button>
+                    <a href="{{ path_for('storeReceipts.create') }}" class="ui button">Cancel</a>
+                </div>
+            </form>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block script %}
+    <script src="{{ base_url()}}/js/index.js"></script>
+    <script src="{{ base_url()}}/js/jquery.number.min.js"></script>
+    <script src="{{ base_url()}}/js/receipt.js"></script>
+    <script src="{{ base_url()}}/js/autocomplete.js"></script>
+{% endblock %}

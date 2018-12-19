@@ -1,0 +1,27 @@
+{% extends 'template/master.twig' %}
+
+{% block pageTitle %}Completed SPK{% endblock %}
+
+{% block content %}
+    {% include 'template/partials/header.twig' %}
+    
+    {% include 'work-order/partials/menu.twig' with {'menu': 'completed'} %}
+
+    <h2 class="ui header">
+        Completed SPK
+        <div class="sub header">Daftar SPK yang sudah selesai.</div>
+    </h2>
+
+    {% include 'work-order/partials/search-form.twig' %}
+
+    {% if workOrders is not empty %}
+        {% include 'work-order/partials/table.twig' with {'workOrders': workOrders} %}
+        {{ workOrders.links|raw }}
+    {% else %}
+        {% include 'template/partials/notFoundMessage.twig' with {'variable': 'SPK completed'} %}
+    {% endif %}
+{% endblock %}
+
+{% block script %}
+    <script src="{{ base_url()}}/js/autocomplete.js"></script>
+{% endblock %}

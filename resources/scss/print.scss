@@ -1,0 +1,21 @@
+$border-color: #999;
+$bg-color: #ccc;
+
+@media print {
+    .ui.table {
+        border-collapse: collapse;
+        border-color: $border-color;
+
+        thead th {
+            text-align: center;
+        }
+
+        thead th, tfoot th, tr td {
+            border: 1px solid $border-color;
+        }
+
+        thead th, tfoot th {
+            background: $bg-color;
+        }
+    }
+}

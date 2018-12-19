@@ -1,0 +1,10 @@
+{% if errors %}
+    <div class="ui negative message">
+        <div class="header">Oops! Please check your input again.</div>
+        <ul class="list">
+            {% for field in errors %}
+                <li>{{ field | first }}</li>
+            {% endfor %}    
+        </ul>
+    </div>
+{% endif %}

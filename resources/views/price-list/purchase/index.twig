@@ -1,0 +1,55 @@
+{% extends 'template/master.twig' %}
+
+{% block pageTitle %}Daftar Harga{% endblock %}
+
+{% block content %}
+    {% include 'template/partials/header.twig' %}
+    
+    {% include 'price-list/partials/menu.twig' with {'menu': 'purchasePrices.index'} %}
+
+    <h2 class="ui header">
+        Daftar Harga Beli
+        <div class="sub header">Daftar harga pembelian barang.</div>
+    </h2>
+
+    <form method="get" class="ui form">
+        <div class="fields">
+            <div class="four wide field">
+                <input type="text" name="q" placeholder="Nama barang" value="{{ GET['q'] ?? null }}" required>
+            </div>
+            <div class="field">
+                <button type="submit" class="ui button"><i class="search icon"></i>Search</button>
+            </div>
+        </div>
+    </form>
+
+    {% include 'template/partials/flash.twig' %}
+
+    {% if purchasePrices is not empty %}
+    <table class="ui celled table">
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Nama Barang</th>
+                <th>Kategori</th>
+                <th>Harga Satuan</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for purchasePrice in purchasePrices %}
+                <tr>
+                    <td><a href="{{ path_for('purchasePrices.edit', {'id': purchasePrice.id}) }}">{{ loop.index }}</a></td>
+                    <td>{{ purchasePrice.product_name }}</td>
+                    <td>{{ purchasePrice.productCategory.name }}</td>
+                    <td>{{ purchasePrice.price|number_format }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {{ purchasePrices.links|raw }}
+
+    {% else %}
+        {% include 'template/partials/notFoundMessage.twig' with {'variable': 'harga pembelian'} %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,22 @@
+<table class="ui celled table">
+    <thead>
+        <tr>
+            <th class="one wide">No. SPK</th>
+            <th class="four wide">Nama Pelanggan</th>
+            <th class="six wide">Jenis Cetakan</th>
+            <th class="two wide">Jumlah</th>
+            <th class="two wide">Tanggal</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for workOrder in workOrders %}
+            <tr>
+                <td><a href="{{ path_for('workOrders.show', {'id': workOrder.id}) }}">{{ workOrder.id }}</a></td>
+                <td>{{ workOrder.customer }}</td>
+                <td>{{ workOrder.print_type }}</td>
+                <td>{{ workOrder.quantity }} {{ workOrder.unit }}</td>
+                <td>{{ workOrder.created_at|date }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

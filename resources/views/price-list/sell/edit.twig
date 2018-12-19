@@ -1,0 +1,49 @@
+{% extends 'template/master.twig' %}
+
+{% block pageTitle %}Edit Harga Jual ({{ sellPrice.id }}){% endblock %}
+
+{% block content %}
+    {% include 'template/partials/header.twig' %}
+
+    {% include 'price-list/partials/menu.twig' %}
+
+    <h2 class="ui header"> Edit Harga Jual</h2>
+
+    <form action="{{ path_for('sellPrices.update', {'id': sellPrice.id}) }}" method="post" class="ui form">
+        <input type="hidden" name="_METHOD" value="put">
+        <div class="two fields">
+            <div class="five wide field">
+                <label for="product_name">Nama Barang</label>
+                <input type="text" name="product_name" id="product_name" placeholder="Nama Barang" value="{{ sellPrice.product_name }}">
+            </div>
+            <div class="three wide field">
+                <label for="price">Harga Satuan</label>
+                <input type="text" name="price" id="price" placeholder="Harga Satuan" value="{{ sellPrice.price }}">
+            </div>
+        </div>
+
+        {{ csrf.fields|raw }}
+
+        {% include 'template/partials/errors.twig' %}
+
+        <div class="field">
+            <button type="submit" class="ui primary button"><i class="save icon"></i> Update</button>
+            <a href="{{ path_for('sellPrices.index') }}" class="ui button">Cancel</a>
+        </div>
+    </form>
+    <p></p>
+    <form action="{{ path_for('sellPrices.delete', {'id': sellPrice.id}) }}" method="post" class="ui form">
+        <div class="field">
+            <input type="hidden" name="_METHOD" value="delete">
+            {{ csrf.fields|raw }}
+            <button type="submit" class="negative ui button"><i class="trash icon"></i> Delete</button>
+        </div>
+    </form>
+{% endblock %}
+
+{% block script %}
+    <script src="{{ base_url()}}/js/jquery.number.min.js"></script>
+    <script>
+        $('#price').number(true, 0, ',', '.')
+    </script>
+{% endblock %}

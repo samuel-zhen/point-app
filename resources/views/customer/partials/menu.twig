@@ -1,0 +1,9 @@
+<h1 class="ui center aligned header">Pelanggan</h1>
+<div class="ui grid">
+    <div class="five wide column">
+        <div class="ui two item menu">
+            <a href="{{ path_for('customers.index') }}" class="ui {% if menu == 'index' %}active{% endif %} item">Daftar Pelanggan</a>
+            <a href="{{ path_for('customers.create') }}" class="ui {% if menu == 'create' %}active{% endif %} item">Tambah Pelanggan</a>
+        </div>
+    </div>
+</div>

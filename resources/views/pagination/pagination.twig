@@ -1,0 +1,32 @@
+{% if paginator.hasPages %}
+    <div class="ui pagination menu">
+    {# Previous Page Link #}
+    {% if paginator.onFirstPage %}
+        <div class="disabled item"><i class="angle left icon"></i></div>
+    {% else %}
+        <a href="{{ paginator.previousPageUrl }}" class="item"><i class="angle left icon"></i></a>
+    {% endif %}
+
+    {# Pagination elements #}
+    {% for element in elements %}
+        {% if element is iterable %}
+            {% for page, url in element %}
+                {% if page == paginator.CurrentPage %}
+                    <a class="active item" href="{{ url }}">{{ page }}</a>
+                {% else %}
+                    <a class="item" href="{{ url }}">{{ page }}</a>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <div class="disabled item">{{ element }}</div>
+        {% endif %}
+    {% endfor %}
+
+    {# Next Page Link #}
+    {% if paginator.hasMorePages %}
+        <a href="{{ paginator.nextPageUrl }}" class="item"><i class="angle right icon"></i></a>
+    {% else %}
+        <div class="disabled item"><i class="angle right icon"></i></div>
+    {% endif %}
+    </div>
+{% endif %}

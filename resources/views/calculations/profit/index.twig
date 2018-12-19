@@ -1,0 +1,124 @@
+{% extends 'template/master.twig' %}
+
+{% block pageTitle %}Omset{% endblock %}
+
+{% block content %}
+    {% include 'template/partials/header.twig' %}
+    
+    {% include 'calculations/partials/menu.twig' with {'menu': 'profit'} %}
+    
+    <h2 class="ui header">
+        Omset
+        <div class="sub header">Perhitungan omset toko. Masukkan tanggal awal, tanggal akhir dan klik tombol <strong>calculate</strong> untuk memulai.</div>
+    </h2>
+
+    <form method="get" class="ui form">
+        <div class="fields">
+            <div class="field">
+                <label>Tanggal Awal</label>
+                <div class="fields">
+                    <div class="field">
+                       <select name="start_date[day]" id="start_date[day]" class="ui compact search dropdown" required>
+                            <option value="">Day</option>
+                            {% for day in 1..31 %}
+                                <option value="{{ day }}">{{ day }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="field">
+                        <select name="start_date[month]" id="start_date[month]" class="ui compact search dropdown" required>
+                            <option value="">Month</option>
+                            {% for month in 1..12 %}
+                                <option value="{{ month }}">{{ month }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="field">
+                        <select name="start_date[year]" id="start_date[year]" class="ui compact search dropdown" required>
+                            <option value="">Year</option>
+                            {% for year in 2018..'now'|date('Y') %}
+                                <option value="{{ year }}">{{ year }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <label>Tanggal Akhir</label>
+                <div class="fields">
+                    <div class="field">
+                       <select name="end_date[day]" id="end_date[day]" class="ui compact search dropdown" required>
+                            <option value="">Day</option>
+                            {% for day in 1..31 %}
+                                <option value="{{ day }}">{{ day }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="field">
+                        <select name="end_date[month]" id="end_date[month]" class="ui compact search dropdown" required>
+                            <option value="">Month</option>
+                            {% for month in 1..12 %}
+                                <option value="{{ month }}">{{ month }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="field">
+                        <select name="end_date[year]" id="end_date[year]" class="ui compact search dropdown" required>
+                            <option value="">Year</option>
+                            {% for year in 2018..'now'|date('Y') %}
+                                <option value="{{ year }}">{{ year }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <label>&nbsp;</label>
+                <button type="submit" class="ui primary button">Calculate</button>
+            </div>
+        </div>
+    </form>
+
+    {% include 'template/partials/flash.twig' %}
+
+    {% if GET.start_date is not empty and GET.end_date is not empty %}
+        {% if receipts is not empty %}
+            <div class="ui divider"></div>
+            <p>Total omset dari {{ GET.start_date|join('/') }} sampai {{ GET.end_date|join('/') }}:</p>
+            <p class="value">Rp {{ omset|number_format }}</p>
+        
+            <table class="ui celled table">
+                <thead>
+                    <tr>
+                        <th>No. Nota</th>
+                        <th>Tanggal Nota</th>
+                        <th>Nama Pelanggan</th>
+                        <th>Tanggal Lunas</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for receipt in receipts %}
+                        <tr>
+                            <td><a href="{{ path_for('storeReceipts.show', {'id': receipt.id}) }}">{{ receipt.formattedNumber() }}</a></td>
+                            <td>{{ receipt.created_at|date }}</td>
+                            <td>{{ receipt.customer }}</td>
+                            <td>{{ receipt.settled_date|date }}</td>
+                            <td>{{ receipt.total|number_format }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {{ receipts.links|raw }}
+        {% else %}
+            <div class="ui message">
+                <p>Tidak ada omset dari tanggal {{ GET.start_date|join('/') }} sampai {{ GET.end_date|join('/') }}.</p>
+            </div>
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block script %}
+    <script src="{{ base_url() }}/js/index.js"></script>
+{% endblock %}

@@ -1,0 +1,132 @@
+{% extends 'template/master.twig' %}
+
+{% block pageTitle %}Data SPK ({{ workOrder.id }}){% endblock %}
+
+{% block content %}
+    {% include 'template/partials/header.twig' %}
+
+    {% include 'work-order/partials/menu.twig' %}
+
+    <h2 class="ui header">Data SPK</h2>
+
+    {% include 'template/partials/flash.twig' %}
+
+    <div class="ui padded piled segment">
+        <div class="ui grid">
+            <div class="row">
+                <div class="three wide column">
+                    <span>Nomor SPK</span>
+                    <p class="value">{{ workOrder.id }}</p>
+                </div>
+                <div class="three wide column">
+                    <span>Tanggal</span>
+                    <p class="value">{{ workOrder.created_at|date('d/m/Y H:i:s') }}</p>
+                </div>
+                <div class="six wide column">
+                    <span>Nama Pelanggan</span>
+                    <p class="value">{{ workOrder.customer }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="three wide column">
+                    <span>Banyaknya</span>
+                    <p class="value">{{ workOrder.quantity|number_format() }} {{ workOrder.unit }}</p>
+                </div>
+                <div class="eight wide column">
+                    <span>Jenis Cetakan</span>
+                    <p class="value">{{ workOrder.print_type ?? '---' }}</p>
+                </div>
+            </div>
+            <div class="sixteen wide column">
+                <div class="ui divider"></div>
+                <p class="value">Bahan</p>
+            </div>
+            <div class="row">
+                <div class="four wide column">
+                    <span>Jenis/Warna</span>
+                    <p class="value">{{ workOrder.type_color ?? '---' }}</p>
+                </div>
+                <div class="four wide column">
+                    <span>Ukuran</span>
+                    <p class="value">{{ workOrder.dimension ?? '---' }}</p>
+                </div>
+                <div class="three wide column">
+                    <span>Tinta</span>
+                    <p class="value">{{ workOrder.ink ?? '---' }}</p>
+                </div>
+            </div>
+            <div class="sixteen wide column">
+                <div class="ui divider"></div>
+                <p class="value">Buku</p>
+            </div>
+            <div class="row">
+                <div class="four wide column">
+                    <span>Set/Rangkap</span>
+                    <p class="value">{{ workOrder.set_double ?? '---' }}</p>
+                </div>
+                <div class="four wide column">
+                    <span>Nomor</span>
+                    <p class="value">{{ workOrder.number ?? '---' }}</p>
+                </div>
+                <div class="four wide column">
+                    <span>Cacah</span>
+                    <p class="value">{{ workOrder.holes ?? '---' }}</p>
+                </div>
+                <div class="four wide column">
+                    <span>Lem</span>
+                    <p class="value">{{ workOrder.glue ?? '---' }}</p>
+                </div>
+            </div>
+            <div class="sixteen wide column">
+                <div class="ui divider"></div>
+            </div>
+            <div class="row">
+                <div class="four wide column">
+                    <span>Dibuat oleh</span>
+                    <p class="value">{{ workOrder.user.username }}</p>
+                </div>
+                <div class="four wide column">
+                    <span>Status</span>
+                    <p class="value">{{ workOrder.status() }}</p>
+                </div>
+                <div class="four wide column">
+                    <span>Perubahan Terakhir</span>
+                    <p class="value">{{ workOrder.updated_at|date('d/m/Y H:i:s') }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# If active user is owner or admin then show update status button #}
+    {% if auth.user.access_level_id == 1 or auth.user.access_level_id == 2 %}
+        {% if workOrder.is_complete %}
+            <form action="{{ path_for('workOrders.isOngoing', {'id': workOrder.id}) }}" method="post" class="form-inline">
+                <input type="hidden" name="_METHOD" value="patch">
+                {{ csrf.fields|raw }}
+                <button type="submit" class="olive ui button"><i class="history icon"></i> Ongoing</button>
+            </form>
+        {% else %}
+            <form action="{{ path_for('workOrders.isCompleted', {'id': workOrder.id}) }}" method="post" class="form-inline">
+                <input type="hidden" name="_METHOD" value="patch">
+                {{ csrf.fields|raw }}
+                <button type="submit" class="positive ui button"><i class="check icon"></i> Complete</button>
+            </form>
+        {% endif %}
+    {% endif %}
+    
+
+    <a href="{{ path_for('workOrders.edit', {'id': workOrder.id }) }}" class="ui orange button"><i class="edit icon"></i> Edit</a>
+    
+    {# If active user is owner then show delete button #}
+    {% if auth.user.access_level_id == 1 %}
+        <form action="{{ path_for('workOrders.delete', {'id': workOrder.id}) }}" method="post" class="form-inline">
+            <input type="hidden" name="_METHOD" value="delete">
+            {{ csrf.fields|raw }}
+            <button type="submit" class="negative ui button"><i class="trash icon"></i> Delete</button>
+        </form>
+    {% endif %}
+    
+    
+    <a href="{{ path_for('workOrders.print', {'id': workOrder.id }) }}" class="ui button" target="__blank"><i class="print icon"></i> Print</a>
+    <a href="{{ path_for('workOrders.ongoing') }}" class="ui button">Cancel</a>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'template/master.twig' %}
+
+{% block pageTitle %}Login{% endblock %}
+
+{% block content %}
+    <div class="login">
+        <img src="{{ base_url()}}/images/point.png" alt="Logo Point" class="ui small centered image">
+        <div class="ui divider"></div>
+        <h2 class="ui header">Login Account</h2>
+
+        {% include 'template/partials/flash.twig' %}
+
+        <form action="{{ path_for('auth.postLogin') }}" class="ui form" method="post">
+            <div class="field">
+                <div class="ui left icon input">
+                    <input type="text" name="username" id="username" placeholder="Username">
+                    <i class="user icon"></i>
+                </div>
+            </div>
+            <div class="field">
+                <div class="ui left icon input">
+                    <input type="password" name="password" id="password" placeholder="Password">
+                    <i class="key icon"></i>
+                </div>
+            </div>
+
+            {{ csrf.fields|raw}}
+
+            <div class="field">
+                <button type="submit" class="ui fluid primary button">Login <i class="right arrow icon"></i></button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

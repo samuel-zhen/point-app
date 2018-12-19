@@ -1,0 +1,43 @@
+{% extends 'template/master.twig' %}
+
+{% block pageTitle %}Catatan{% endblock %}
+
+{% block content %}
+    {% include 'template/partials/header.twig' %}
+
+    {% include 'note/partials/menu.twig' with {'menu': 'index'} %}
+
+    <h2 class="ui header">
+        Semua Catatan
+        <div class="sub header">Semua catatan yang tersedia.</div>
+    </h2>
+
+    {% include 'template/partials/flash.twig' %}
+
+    {% if notes is not empty %}
+        <div class="ui three stackable cards">
+            {% for note in notes %}
+                <div class="ui fluid card">
+                    <div class="content">
+                        <div class="meta">{{ note.user.username }} | {{ note.updated_at|date }}</div>
+                        <div class="description notes-description">
+                            {{ note.body|raw }}
+                        </div>
+                    </div>
+                    <div class="extra content">
+                        <a href="{{ path_for('notes.edit', {'id': note.id}) }}" class="ui orange button"><i class="edit icon"></i> Edit</a>
+                        <form action="{{ path_for('notes.delete', {'id': note.id}) }}" method="post" class="form-inline">
+                            <input type="hidden" name="_METHOD" value="delete">
+                            {{ csrf.fields|raw }}
+                            <button type="submit" class="negative ui button"><i class="trash icon"></i> Delete</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <p></p>
+        {{ notes.links|raw }}
+    {% else %}
+        {% include 'template/partials/notFoundMessage.twig' with {'variable': 'catatan'} %}
+    {% endif %}
+{% endblock %}

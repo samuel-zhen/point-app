@@ -1,0 +1,30 @@
+{% extends 'template/master.twig' %}
+
+{% block pageTitle %}Nota CV Hutang{% endblock %}
+
+{% block content %}
+    {% include 'template/partials/header.twig' %}
+
+    {% include 'receipt/partials/menu.twig' with {'menu': 'cvReceipts.list'} %}
+    
+    {% include 'receipt/partials/cv-submenu.twig' with {'menu': 'debt'} %}
+
+    <h2 class="ui header">
+        Nota CV (Hutang)
+        <div class="sub header">Nota-nota CV yang belum dilunasin.</div>
+    </h2>
+
+    {% include 'receipt/partials/search-form.twig' %}
+
+    {% if receipts is not empty %}
+        {% include 'receipt/partials/cv-table.twig' with {'receipts': receipts} %}
+        {{ receipts.links|raw }}
+    {% else %}
+        {% include 'template/partials/notFoundMessage.twig' with {'variable': 'nota hutang'} %}
+    {% endif %}
+{% endblock %}
+
+{% block script %}
+    <script src="{{ base_url() }}/js/index.js"></script>
+    <script src="{{ base_url() }}/js/autocomplete.js"></script>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'template/master.twig' %}
+
+{% block pageTitle %}Home{% endblock %}
+
+{% block content %}
+    <div class="home-wrapper">
+        {% include 'template/partials/header.twig' with {'page' : 'main'} %}
+
+        <div class="main-menu">
+            <a class="main-menu__item" href="{{ path_for('workOrders.ongoing') }}">
+                <i class="wrench huge icon"></i>
+                <p class="main-menu__item__text">Surat Perintah Kerja</p>
+            </a>
+            <a class="main-menu__item" href="{{ path_for('storeReceipts.create') }}">
+                <i class="tags huge icon"></i>
+                <p class="main-menu__item__text">Nota</p>
+            </a>
+            <a class="main-menu__item" href="{{ path_for('customers.index') }}">
+                <i class="address book huge icon"></i>
+                <p class="main-menu__item__text">Pelanggan</p>
+            </a>
+            <a class="main-menu__item" href="{{ path_for('notes.index') }}">
+                <i class="sticky note huge icon"></i>
+                <p class="main-menu__item__text">Catatan</p>
+            </a>
+            <a class="main-menu__item" href="{{ path_for('profit.index') }}">
+                <i class="balance scale huge icon"></i>
+                <p class="main-menu__item__text">Omset &amp; Hutang</p>
+            </a>
+            <a class="main-menu__item" href="{{ path_for('sellPrices.index') }}">
+                <i class="money huge icon"></i>
+                <p class="main-menu__item__text">Daftar Harga</p>
+            </a>
+            {% if auth.user.access_level_id == 1 %}
+                <a class="main-menu__item" href="{{ path_for('users.index') }}">
+                    <i class="users huge icon"></i>
+                    <p class="main-menu__item__text">Akun Pengguna</p>
+                </a>
+            {% endif %}
+        </div>
+
+        <div class="ui divider"></div>
+        <p>Point &mdash; Design &amp; Offset Printing</p>
+    </div>
+{% endblock %}

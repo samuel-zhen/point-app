@@ -1,0 +1,40 @@
+{% extends 'template/master.twig' %}
+
+{% block pageTitle %}Edit Akun ({{ user.id }}){% endblock %}
+
+{% block content %}
+    {% include 'template/partials/header.twig' %}
+    
+    {% include 'user/partials/menu.twig' %}
+
+    <h2 class="ui header">Edit Akun</h2>
+
+    <form action="{{ path_for('users.update', {'id': user.id }) }}" method="post" class="ui form">
+        <input type="hidden" name="_METHOD" value="put">
+        <div class="five wide field">
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username" placeholder="Username" value="{{ user.username }}">
+        </div>
+        <div class="five wide field">
+            <label for="access_level">Akses Level</label>
+            <select name="access_level" id="access_level" class="ui search dropdown">
+                 {% for level in levels %}
+                    <option value="{{ level.id }}" {% if level.id == user.access_level_id %}selected{% endif %}>{{ level.access_level }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        {{ csrf.fields|raw }}
+
+        {% include 'template/partials/errors.twig' %}
+
+        <div class="field">
+            <button type="submit" class="ui primary button"><i class="save icon"></i>Update</button>
+            <a href="{{ path_for('users.index') }}" class="ui button">Cancel</a>
+        </div>
+    </form>
+{% endblock %}
+
+{% block script %}
+    <script src="{{ base_url() }}/js/index.js"></script>
+{% endblock %}

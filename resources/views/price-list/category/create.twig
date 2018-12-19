@@ -1,0 +1,30 @@
+{% extends 'template/master.twig' %}
+
+{% block pageTitle %}Tambah Kategori Barang{% endblock %}
+
+{% block content %}
+    {% include 'template/partials/header.twig' %}
+    
+    {% include 'price-list/partials/menu.twig' with {'menu': 'categories.create'} %}
+
+    <h2 class="ui header">
+        Tambah Kategori Barang
+        <div class="sub header">Tambah kategori pembelian barang.</div>
+    </h2>
+
+    <form action="{{ path_for('categories.store') }}" method="post" class="ui form">
+        <div class="five wide {% if errors.category_name %}error{% endif %} required field">
+            <label for="category_name">Nama Kategori</label>
+            <input type="text" name="category_name" id="category_name" placeholder="Nama Kategori" value="{{ old.category_name }}">
+        </div>
+
+        {{ csrf.fields|raw }}
+
+        {% include 'template/partials/errors.twig' %}
+
+        <div class="field">
+            <button type="submit" class="ui primary button"><i class="save icon"></i> Save</button>
+            <a href="{{ path_for('categories.index') }}" class="ui button">Cancel</a>
+        </div>
+    </form>
+{% endblock %}

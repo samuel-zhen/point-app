@@ -1,0 +1,98 @@
+{% extends 'template/master.twig' %}
+
+{% block pageTitle %}Buat SPK{% endblock %}
+
+{% block content %}
+    {% include 'template/partials/header.twig' %}
+
+    {% include 'work-order/partials/menu.twig' with {'menu': 'create'} %}
+
+    <h2 class="ui header">
+        Buat SPK
+        <div class="sub header">Membuat SPK baru.</div>
+    </h2>
+
+    <form action="{{ path_for('workOrders.store') }}" method="post" class="ui form">
+        <div class="two fields">
+            <div class="six wide {% if errors.customer_name %}error{% endif %} required field">
+                <label for="customer_name">Nama Pelanggan</label>
+                <div class="ui search">
+                    <input type="text" name="customer_name" id="customer_name" class="prompt" placeholder="Nama Pelanggan" value="{{ old.customer_name }}">
+                    <div class="results"></div>
+                </div>
+            </div>
+            <div class="eight wide {% if errors.print_type %}error{% endif %} required field">
+                <label for="print_type">Jenis Cetakan</label>
+                <input type="text" name="print_type" id="print_type" placeholder="Jenis Cetakan" value="{{ old.print_type }}">
+            </div>
+        </div>
+        <div class="field">
+            <div class="six wide {% if errors.quantity or errors.unit %}error{% endif %} required field">
+                <label for="quantity">Banyaknya</label>
+                <div class="two fields">
+                    <div class="field">
+                        <input type="text" name="quantity" id="quantity" placeholder="Kuantitas" value="{{ old.quantity }}">
+                    </div>
+                    <div class="field">
+                        <input type="text" name="unit" id="unit" placeholder="Satuan" value="{{ old.unit }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="fourteen wide field">
+            <h4 class="ui dividing header">Bahan</h4>
+            <div class="three fields">
+                <div class="five wide {% if errors.type_color %}error{% endif %} field">
+                    <label for="type_color">Jenis/Warna</label>
+                    <input type="text" name="type_color" id="type_color" placeholder="Jenis/Warna" value="{{ old.type_color }}">
+                </div>
+                <div class="five wide {% if errors.dimension %}error{% endif %} field">
+                    <label for="dimension">Ukuran</label>
+                    <input type="text" name="dimension" id="dimension" placeholder="Ukuran" value="{{ old.dimension }}">
+                </div>
+                <div class="four wide {% if errors.ink %}error{% endif %} field">
+                    <label for="ink">Tinta</label>
+                    <input type="text" name="ink" id="ink" placeholder="Tinta" value="{{ old.ink }}">
+                </div>
+            </div>
+        </div>
+        <div class="fourteen wide field">
+            <h4 class="ui dividing header">Buku</h4>
+            <div class="four fields">
+                <div class="{% if errors.set_double %}error{% endif %} field">
+                    <label for="set_double">Set/Rangkap</label>
+                    <input type="text" name="set_double" id="set_double" placeholder="Set/Rangkap" value="{{ old.set_double }}">
+                </div>
+                <div class="{% if errors.number %}error{% endif %} field">
+                    <label for="number">Nomor</label>
+                    <input type="text" name="number" id="number" placeholder="Nomor" value="{{ old.number }}">
+                </div>
+                <div class="{% if errors.count %}error{% endif %} field">
+                    <label for="holes">Cacah</label>
+                    <input type="text" name="holes" id="holes" placeholder="Cacah" value="{{ old.count }}">
+                </div>
+                <div class="{% if errors.glue %}error{% endif %} field">
+                    <label for="glue">Lem</label>
+                    <input type="text" name="glue" id="glue" placeholder="Lem" value="{{ old.glue }}">
+                </div>
+            </div>
+        </div>
+
+        {{ csrf.fields|raw }}
+
+        {% include 'template/partials/errors.twig' %}
+
+        <div class="field">
+            <button type="submit" class="ui primary button"><i class="save icon"></i> Save</button>
+            <a href="{{ path_for('workOrders.ongoing') }}" class="ui button">Cancel</a>
+        </div>
+    </form>
+{% endblock %}
+
+{% block script %}
+    <script src="{{ base_url()}}/js/autocomplete.js"></script>
+    <script src="{{ base_url()}}/js/jquery.number.min.js"></script>
+    <script>
+        $('#quantity').number(true, 0, ',', '.')
+    </script>
+{% endblock %}

@@ -1,0 +1,19 @@
+<form method="get" class="ui form">
+    <div class="fields">
+        <div class="four wide field">
+            <div class="ui search">
+                <input type="text" name="q" class="prompt" placeholder="Search" value="{{ GET.q ?? null}}" required>
+                <div class="results"></div>
+            </div>
+        </div>
+        <div class="three wide field">
+            <select class="ui compact selection dropdown" name="col">
+                <option value="id" {% if GET.col == 'id'%}selected{% endif %}>Nomor Nota</option>
+                <option value="customer" {% if GET.col == 'customer'%}selected{% endif %}>Nama Pelanggan</option>
+            </select>
+        </div>
+        <div class="field">
+            <button type="submit" class="ui button">Search</button>
+        </div>
+    </div>
+</form>

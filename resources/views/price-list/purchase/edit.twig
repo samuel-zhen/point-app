@@ -1,0 +1,57 @@
+{% extends 'template/master.twig' %}
+
+{% block pageTitle %}Edit Harga Beli ({{ purchasePrice.id }}){% endblock %}
+
+{% block content %}
+    {% include 'template/partials/header.twig' %}
+
+    {% include 'price-list/partials/menu.twig' %}
+
+    <h2 class="ui header">Edit Harga Beli</h2>
+
+    <form action="{{ path_for('purchasePrices.update', {'id': purchasePrice.id}) }}" method="post" class="ui form">
+        <input type="hidden" name="_METHOD" value="put">
+        <div class="three fields">
+            <div class="five wide field">
+                <label for="product_name">Nama Barang</label>
+                <input type="text" name="product_name" id="product_name" placeholder="Nama Barang" value="{{ purchasePrice.product_name }}">
+            </div>
+            <div class="four wide field">
+                <label for="category">Kategori</label>
+                <select name="category_id" id="category" class="ui search dropdown">
+                    {% for category in productCategories %}
+                        <option value="{{ category.id }}" {% if category.id == purchasePrice.category_id %}selected{% endif %}
+                        >{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="three wide field">
+                <label for="price">Harga Satuan</label>
+                <input type="text" name="price" id="price" placeholder="Harga Satuan" value="{{ purchasePrice.price }}">
+            </div>
+        </div>
+
+        {{ csrf.fields|raw }}
+
+        {% include 'template/partials/errors.twig' %}
+
+        <div class="field">
+            <button type="submit" class="ui primary button"><i class="save icon"></i> Update</button>
+            <a href="{{ path_for('purchasePrices.index') }}" class="ui button">Cancel</a>
+        </div>
+    </form>
+    <p></p>
+    <form action="{{ path_for('purchasePrices.delete', {'id': purchasePrice.id}) }}" method="post" class="form-inline">
+        <input type="hidden" name="_METHOD" value="delete">
+        {{ csrf.fields|raw }}
+        <button type="submit" class="negative ui button"><i class="trash icon"></i> Delete</button>
+    </form>
+{% endblock %}
+
+{% block script %}
+    <script src="{{ base_url() }}/js/index.js"></script>
+    <script src="{{ base_url()}}/js/jquery.number.min.js"></script>
+    <script>
+        $('#price').number(true, 0, ',', '.')
+    </script>
+{% endblock %}

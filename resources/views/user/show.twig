@@ -1,0 +1,37 @@
+{% extends 'template/master.twig' %}
+
+{% block pageTitle %}Data Akun ({{ user.id }}){% endblock %}
+
+{% block content %}
+    {% include 'template/partials/header.twig' %}
+
+    {% include 'user/partials/menu.twig' %}
+
+    <h2 class="ui header">Data Akun</h2>
+
+    {% include 'template/partials/flash.twig' %}
+
+    <div class="ui piled padded segment">
+        <div class="ui grid">
+            <div class="two wide column">
+                <span>ID User</span>
+                <p class="value">{{ user.id }}</p>
+            </div>
+            <div class="three wide column">
+                <span>Username</span>
+                <p class="value">{{ user.username }}</p>
+            </div>
+            <div class="three wide column">
+                <span>Akses Level</span>
+                <p class="value">{{ user.accessLevel.access_level }}</p>
+            </div>
+            <div class="three wide column">
+                <span>Tanggal Gabung</span>
+                <p class="value">{{ user.created_at|date }}</p>
+            </div>
+        </div>
+    </div>
+
+    <a href="{{ path_for('users.edit', {'id': user.id}) }}" class="ui orange button"><i class="edit icon"></i> Edit</a>
+    <a href="{{ path_for('users.index') }}" class="ui button">Cancel</a>
+{% endblock %}

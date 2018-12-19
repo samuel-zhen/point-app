@@ -1,0 +1,5 @@
+<a href="{{ path_for('home') }}">
+    <img src="{{ base_url() }}/images/point.png" alt="Logo Point" class="ui centered small image">
+</a>
+<div class="ui divider"></div>
+<p>Hai, <strong>{{ auth.user.username }}</strong>! | <a href="{{ path_for('auth.getChangePassword') }}">Change Password</a> | <a href="{{ path_for('auth.logout') }}">Logout</a></p>

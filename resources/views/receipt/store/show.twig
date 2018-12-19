@@ -1,0 +1,131 @@
+{% extends 'template/master.twig' %}
+
+{% block pageTitle %}Data Nota Toko ({{ receipt.id }}){% endblock %}
+
+{% block content %}
+    {% include 'template/partials/header.twig' %}
+    
+    {% include 'receipt/partials/menu.twig' %}
+
+    <h2 class="ui header">Data Nota Toko</h2>
+
+    {% include 'template/partials/flash.twig' %}
+
+    <div class="ui piled segment">
+        {% if receipt.is_deleted %}
+            <span class="ui orange ribbon large label">Dibatalkan</span>
+        {% else %}
+            <span class="ui {% if receipt.is_settled %}green{% else %}red{% endif %} ribbon large label">{{ receipt.status() }}</span>
+        {% endif %}
+        <p></p>
+
+        {% if receipt.is_deleted %}
+            <p><strong>Nota ini telah dibatalkan.</strong></p>
+        {% endif %}
+        
+        <div class="ui grid">
+            <div class="two wide column">
+                <span>Nomor Nota</span>
+                <p class="value">{{ receipt.formattedNumber() }}</p>
+            </div>
+            <div class="two wide column">
+                <span>Tanggal Nota</span>
+                <p class="value">{{ receipt.created_at|date }}</p>
+            </div>
+            {% if receipt.is_settled %}
+                <div class="two wide column">
+                    <span>Tanggal Lunas</span>
+                    <p class="value">{{ receipt.settled_date|date }}</p>
+                </div>
+            {% endif %}
+            <div class="three wide column">
+                <span>Dibuka oleh</span>
+                <p class="value">{{ receipt.user.username }}</p>
+            </div>
+            <div class="seven wide column">
+                <span>Nama Pelanggan</span>
+                <p class="value">{{ receipt.customer }}</p>
+            </div>
+        </div>
+        <table class="ui celled table">
+            <thead>
+                <tr>
+                    <th class="eight wide column">Nama Barang</th>
+                    <th class="two wide column">Banyaknya</th>
+                    <th class="two wide column">Satuan</th>
+                    <th class="two wide column">Harga Satuan</th>
+                    <th class="two wide column">Jumlah</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% set total = 0 %}
+                {% if workOrders is not empty %}
+                    {% for workOrder in workOrders %}
+                        <tr>
+                            <td><a href="{{ path_for('workOrders.show', {'id': workOrder.work_order_id})}}">{{ workOrder.product }}</a></td>
+                            <td>{{ workOrder.quantity|number_format }}</td>
+                            <td>{{ workOrder.unit }}</td>
+                            <td>{{ workOrder.price|number_format }}</td>
+                            <td>{{ workOrder.total|number_format }}</td>
+                        </tr>
+                        {% set total = total + workOrder.total %}
+                    {% endfor %}
+                {% endif %}
+                {% if items is not empty %}
+                    {% for item in items %}
+                        <tr>
+                            <td>{{ item.product }}</td>
+                            <td>{{ item.quantity|number_format }}</td>
+                            <td>{{ item.unit }}</td>
+                            <td>{{ item.price|number_format }}</td>
+                            <td>{{ item.total|number_format }}</td>
+                        </tr>
+                        {% set total = total + item.total %}
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="3">&nbsp;</th>
+                    <th><strong>Total (Rp)</strong></th>
+                    <th><strong>{{ total|number_format }}</strong></th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    {# If receipt is not deleted and active user is owner or admin then show update status button #}
+    {% if not receipt.is_deleted and (auth.user.access_level_id == 1 or auth.user.access_level_id == 2) %}
+        {% if receipt.is_settled %}
+            <form action="{{ path_for('storeReceipts.debt', {'id': receipt.id}) }}" method="post" class="form-inline">
+                <input type="hidden" name="_METHOD" value="patch">
+                {{ csrf.fields|raw }}
+                <button type="submit" class="olive ui button"><i class="bookmark icon"></i> Hutang</button>
+            </form>
+        {% else %}
+            <form action="{{ path_for('storeReceipts.settled', {'id': receipt.id}) }}" method="post" class="form-inline">
+                <input type="hidden" name="_METHOD" value="patch">
+                {{ csrf.fields|raw }}
+                <button type="submit" class="positive ui button"><i class="check icon"></i> Lunaskan</button>
+            </form>
+        {% endif %}
+    {% endif %}
+    
+    {# If receipt is not deleted and active user is owner then show delete button #}
+    {% if not receipt.is_deleted and auth.user.access_level_id == 1 %}
+        <form action="{{ path_for('storeReceipts.cancel', {'id': receipt.id}) }}" method="post" class="form-inline">
+            <input type="hidden" name="_METHOD" value="delete">
+            {{ csrf.fields|raw }}
+            <button type="submit" class="negative ui button"><i class="trash icon"></i> Delete</button>
+        </form>
+    {% endif %}
+    
+    <a href="{{ path_for('storeReceipts.print', {'id': receipt.id}) }}" class="ui button" target="__blank"><i class="print icon"></i> Print</a>
+    {% if receipt.is_deleted %}
+        <a href="{{ path_for('storeReceipts.canceledList') }}" class="ui button">Cancel</a>
+    {% elseif receipt.is_settled %}
+        <a href="{{ path_for('storeReceipts.settledList') }}" class="ui button">Cancel</a>
+    {% elseif not receipt.is_settled %}
+        <a href="{{ path_for('storeReceipts.debtList') }}" class="ui button">Cancel</a>
+    {% endif %}
+{% endblock %}

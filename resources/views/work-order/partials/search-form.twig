@@ -1,0 +1,16 @@
+<form method="get" class="ui form">
+    <div class="fields">
+        <div class="four wide field">
+            <div class="ui search">
+                <input type="text" name="q_customer" class="prompt" placeholder="Nama Pelanggan" value="{{ GET['q_customer'] ?? null }}" required>
+                <div class="results"></div>
+            </div>
+        </div>
+        <div class="five wide field">
+            <input type="text" name="q_print" placeholder="Jenis cetakan" value="{{ GET['q_print'] ?? null }}">
+        </div>
+        <div class="field">
+            <button type="submit" class="ui button"><i class="search icon"></i>Search</button>
+        </div>
+    </div>
+</form>
